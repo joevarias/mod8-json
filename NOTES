@@ -1,0 +1,353 @@
+Relational Database Management Systems - tabular forms.
+MySQL = is an example of an RDBMS
+ERD = Entity Relationship Diagram - required by client before a project
+
+Diamond
+
+========================
+
+Structured Query Language or SQL
+seekwel/sql
+
+a domain-specific language used in programming and designed for managing data held in a relational 
+
+Data types
+
+DDL Data Definition Lanugage
+- how to describe the data in the database
+DML Data Manipulation Language
+- how to modify the contents of our database
+DCL Data Control Language
+- grant or revoke access
+- determine privileges
+
+CRUD
+Create Review Update Delete
+
+Data Types
+1. Numeric
+2. String
+3. Date and Time
+4. Binary
+
+VARCHAR - for string
+
+Ideally, user CHar for -2 words, VARCHAR for 3-10 words, TEXT for paragraphs
+
+CHAR - fixed length string with size up to 255
+VARCHAR - Variable length string with size up to 65 535 - saved on software
+TEXT - Variable length string with size up to 65 535 - saved on hard drive of server
+
+Numerical Data Type - (image on camera)
+
+Decimal - skill and presicion (M, D)
+where: M = number of digis (max 65) while D = digits after decimal (max 30)
+
+Type        Min               Max
+TINYINT     -128             127
+SMALLINT    -32,768          32767
+INT         -2,147,483,648   2,147,483,647
+BIGINT      -9,223,372,
+DECIMAL
+DOUBLE
+
+
+Date and Time
+
+Type                     
+DATE                     YYYY-MM-DD
+TIME                     HH:MM:SS
+DATETIME/TIMESTAMP       YYYY-MM-DD HH:MM:SS
+
+TIMESTAMP is stored in UTC therefore it is easier to adjust timezones
+DATETIME is stored literally
+
+
+Binary Data Types
+
+These data type can store any data like files, images, movies, music, etc.
+
+TINYBLOB                  255 bytes
+BLOB                      65,535 bytes (64kB)
+MEDIUMBLOB                16,777,215 bytes (16MB)
+LONGBLOB                  4,294,967,297 bytes (4,096 MB) (4GB)
+
+For practical reasons, it is better to upload files into a directory in the server instead of saving it into the database.
+
+
+
+Data Definition Language
+* CREATE TABLE
+* ALTER TABLE
+    * ADD COLUMN
+    * DROP COLUMN
+    * RENAME COLUMN
+* DROP TABLE
+* RENAME TABLE
+
+
+MySQL via the Command Line
+
+Make sure to run/start MySQL from the XAMPP Control Panel
+Open windows command line *cmd)
+Navigate to the XAMPP folder (cd\xampp\mysql\bin)
+run mysql.exe (mysql.exe -u root)
+
+
+
+Creating a Database:
+Schema = collection of your database objects
+
+
+CREATING A TABLE SYNTAX:
+
+CREATE TABLE <table name> (
+<column descriptions>
+)
+
+for column descriptions:
+<column name> <data type> <options>
+
+
+Column Options
+
+* DEFAULT <default value>
+  **default value of this column when the value is not specified
+* AUTO_INCREMENT
+  **Sets the default value of this column to be +1 higher than the previous row inserted
+* NOT NULL
+  ** This column cannot be empty
+* UNIQUE
+
+
+FOREIGN KEY SYNTAX
+
+FOREIGN KEY (column)
+
+REFERENCES table (primary key of table)
+
+SAMPLE:
+CREATE TABLE albums (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    year YEAR(4),
+    artist_id INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(artist_id)
+    REFERENCES artists(id)
+    );
+
+
+FOREIGN KEY CONSTRAINTS
+We can also add additional options what to do when there is a change in the referenced table.
+
+FOREIGN KEY (column)
+REFERENCES table (primary key of table)
+ON DELETE <RESTRICT CASCADE OR SET NULL>
+ON UPDATE <RESTRICT CASCADE OR SET NULL>
+
+
+
+CREATE TABLE tbl_artists(
+    id INT NOT NULL UNIQUE AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+    );
+
+
+CREATE TABLE tbl_albums(
+    id INT UNIQUE AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    year_released YEAR(4),
+    artist_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (artist_id) REFERENCES tbl_artists(id)
+    ON DELETE CASCADE
+    );
+
+
+CREATE TABLE tbl_playlists(
+    id INT AUTO_INCREMENT NOT NULL,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES tbl_users(id)
+      ON UPDATE CASCADE
+      ON DELETE SET NULL
+    );
+
+
+
+CREATE TABLE tbl_songs(
+    id INT AUTO_INCREMENT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    length INT,
+    genre VARCHAR(255) NOT NULL,
+    album_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (album_id)
+  REFERENCES tbl_albums(id)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL
+	);
+
+
+CREATE TABLE tbl_songs_playlists(
+    id INT AUTO_INCREMENT NOT NULL,
+    song_id INT,
+    playlist_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (song_id)
+    	REFERENCES tbl_songs (id)
+    	ON UPDATE CASCADE
+    	ON DELETE SET NULL,
+    FOREIGN KEY (playlist_id)
+    	REFERENCES tbl_playlists(id)
+    	ON UPDATE CASCADE
+    	ON DELETE SET NULL
+    );
+
+==============================
+
+MODIFYING A TABLE Syntax:
+	
+	ALTER TABLE <table name> <table modification>;
+
+
+DELETING A TABLE Syntax:
+	DROP TABLE <table name>;
+
+RENAMING TABLE Syntax:
+	RENAME TABLE <tbl_name> TO <new_tbl_name>;
+
+==============================
+
+ALTER TABLE Username value
+
+ALTER TABLE users CHANGE username uname VARCHAR(255) NOT NULL
+
+DROP is for DBL
+DELETE is for DML
+
+ALTER TABLE tbl_users DROP firstname
+
+DROP TABLE <table_name>
+
+
+==============================
+
+DML - DATA MANIPULATION LANGUAGE
+
+After connecting to the database, we can now do the following:
+
+Create a new row
+Retrieve a new row
+Update a new row
+Delete rows
+
+CRUD Operations
+Create, Read, Update, and Delete
+
+==============================
+
+CREATE
+
+INSERT
+Two types of syntax:
+
+	INSERT INTO table(column1, column2, column3,...)
+				VALUES(val1, val2, val3,...)
+
+	INSERT INTO tables
+				VALUES (val1, val2)
+
+Sample:
+INSERT INTO tbl_users(username, password)
+VALUES('luciano23', 'ohyeah');
+
+
+INSERT INTO tbl_users(username, password)
+VALUES('person2', 312224);
+
+INSERT INTO tbl_users(username, password)
+VALUES('baruk', 'huwaaaaaaaaw');
+
+INSERT INTO tbl_users(username, password)
+VALUES('dustdevil', 'tornado1');
+
+====================
+
+RETRIEVE
+
+Basic SELECT Syntax
+
+	SELECT <columns> FROM table WHERE <condition>
+
+Using SELECT will select all columns from the table
+Filter rows returned using the condition. Only the rows that satisfy the condition will be included.
+
+Sample:
+SELECT title, genre FROM tbl_songs
+
+SELECT * FROM tbl_songs WHERE genre = 'OPM';
+
+SELECT * FROM tbl_songs WHERE length > 250;
+
+SELECT * FROM tbl_songs WHERE genre = 'OPM' AND length > 250;
+
+SELECT * FROM tbl_songs WHERE length > 250 AND length < 270;
+
+SELECT * FROM tbl_songs WHERE genre LIKE '%pop%';
+
+SELECT * FROM tbl_songs WHERE genre LIKE '__pop';
+
+% = ANY CHARACTER, ANY LENGTH
+_ = 1 ANY CHARACTER
+
+===================================
+
+UPDATE
+
+SQL UPDATE Syntax
+	
+	UPDATE table
+	SET column = newval1, column2 = newval2
+	WHERE column3 = val3
+
+WHERE to specify which data to change .
+WHERE is mandatory in UPDATE set. Without WHERE it will update ALL THE DATA in the column.
+
+Sample:
+UPDATE tbl_users SET username = 'johny' WHERE id = 4;
+
+UPDATE tbl_songs SET length = 240 WHERE album_id = 2;
+
+UPDATE tbl_songs SET length = 250, genre = 'k-pop' WHERE album_id = 2;
+
+====================================
+
+DELETE
+
+Basic SQL DELETE Syntax
+
+	DELETE FROM table WHERE column = val
+
+Sample:
+
+DELETE FROM tbl_songs WHERE genre = 'OPM' and length > 250;
+
+====================================
+
+
+Activity:
+Schema: db_movies
+
+Movies(title, year, length, genre, studio_id, producer_id)
+StarsIn(movie_id, movieYear, star_id)
+MovieStar(name, address, gender, birthdate)
+Producer(name, address, netWorth)
+Studio(name, address)
+
+DDL, PRIMARY KEYS, FOREIGN KEYS
+VARCHAR : 150
+INT     : 10

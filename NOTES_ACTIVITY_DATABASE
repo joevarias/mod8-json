@@ -1,0 +1,77 @@
+CREATE TABLE tbl_studios(
+    id INT UNIQUE NOT NULL AUTO_INCREMENT,
+    name VARCHAR(150) NOT NULL,
+    address VARCHAR(150) NOT NULL,
+    PRIMARY KEY (id)
+    );
+
+
+CREATE TABLE tbl_producers(
+    id INT UNIQUE NOT NULL AUTO_INCREMENT,
+    name VARCHAR(150) NOT NULL,
+    address VARCHAR(150) NOT NULL,
+    netWorth INT(10) NOT NULL,
+    PRIMARY KEY(id)
+    );
+
+
+CREATE TABLE tbl_movieStars(
+    id INT UNIQUE NOT NULL AUTO_INCREMENT,
+    name VARCHAR(150) NOT NULL,
+    address VARCHAR(150) NOT NULL,
+    gender VARCHAR(150) NOT NULL,
+    birthdate INT(10) NOT NULL,
+    PRIMARY KEY(id)
+    );
+
+
+CREATE TABLE tbl_movies(
+    id INT UNIQUE NOT NULL AUTO_INCREMENT,
+    title VARCHAR(150) NOT NULL,
+    year VARCHAR(150) NOT NULL,
+    length INT(10) NOT NULL,
+    genre VARCHAR(150) NOT NULL,
+    studio_id INT(10),
+    producer_id INT(10),
+    PRIMARY KEY(id),
+    FOREIGN KEY(studio_id) REFERENCES tbl_studios(id)
+      ON DELETE SET NULL
+      ON UPDATE CASCADE,
+    FOREIGN KEY(producer_id) REFERENCES tbl_producers(id)
+      ON DELETE SET NULL
+      ON UPDATE CASCADE
+    );
+
+
+
+CREATE TABLE tbl_starsIn(
+    id INT UNIQUE NOT NULL AUTO_INCREMENT,
+    movie_id INT(10),
+    movieYear VARCHAR(150) NOT NULL,
+    star_id INT(10),
+    PRIMARY KEY(id),
+    FOREIGN KEY(movie_id) REFERENCES tbl_movies(id)
+      ON DELETE SET NULL
+      ON UPDATE CASCADE,
+    FOREIGN KEY(star_id) REFERENCES tbl_movieStars(id)
+      ON DELETE SET NULL
+      ON UPDATE CASCADE
+    );
+
+================================
+
+Activity:
+Schema: db_movies
+
+Movies(title, year, length, genre, studio_id, producer_id)
+StarsIn(movie_id, movieYear, star_id)
+MovieStar(name, address, gender, birthdate)
+Producer(name, address, netWorth)
+Studio(name, address)
+
+DDL, PRIMARY KEYS, FOREIGN KEYS
+VARCHAR : 150
+INT     : 10
+
+
+

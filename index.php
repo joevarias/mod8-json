@@ -1,4 +1,3 @@
-
 <?php require_once 'partials/header.php'; ?>
 
 <?php require_once 'partials/navbar.php'; ?>
@@ -12,7 +11,7 @@
 				<div class="card-body">
 					<div class="form-group">
 						<label>Search Info</label>
-						<input id="search" class="form-control"></input>
+						<input id="search" class="form-control">
 						<p id="summary"></p>
 					</div>
 
